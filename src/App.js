@@ -131,4 +131,4 @@ function Privacy(){
         </div>)
 }
 
-export default App;
+
