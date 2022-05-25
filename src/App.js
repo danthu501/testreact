@@ -2,24 +2,78 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  const [name, setName] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => { 
+      fetch('https://api.github.com/users/danthu501/repos')
+      .then(res  => res.json())
+      .then(data => {
+          setName((prevname)=>[
+              ...prevname, 
+              {
+                  name: data[0].name, 
+                  description: data[0].description,
+                  html_url: data[0].html_url
+              },
+              {
+                  name: data[1].name, 
+                  description: data[1].description,
+                  html_url: data[1].html_url
+              },
+              {
+                  name: data[2].name, 
+                  description: data[2].description,
+                  html_url: data[2].html_url
+              },
+              {
+                  name: data[3].name, 
+                  description: data[3].description,
+                  html_url: data[3].html_url
+              },
+              {
+                  name: data[4].name, 
+                  description: data[4].description,
+                  html_url: data[4].html_url
+              }
+          ]
+          );
+      setIsLoading(false)
+      } );
+  },[]);
 
-export default App;
+return(
+  <div className="App">
+
+      <nav>
+          <ul className="my-list">
+              <li>
+                  <Link to="/">Home</Link>
+              </li>
+              <li>
+                  <Link to="/About">About</Link>
+              </li>
+              <li>
+                  <Link to="/privacy">Privacy</Link>
+              </li>
+          </ul>
+      </nav>
+      <main>
+          
+          <h2>Mina publika github</h2>
+          {isLoading && <div>Data is curently being Loaded.....</div>}
+          {name.map((names)=>(
+          <div className='container'>
+          <h3>
+          {names.name}
+          </h3>
+          <p>{names.description}</p>
+          <p><a href={names.html_url}>{names.html_url}</a></p>
+          </div>
+      ))
+      }
+  </main>
+
+</div>
+)
+
+}
